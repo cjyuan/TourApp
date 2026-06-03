@@ -16,19 +16,19 @@ import javax.swing.border.EtchedBorder;
  * @author astel
  */
 public class TouristInterface extends javax.swing.JFrame {
-
+    
     private DefaultComboBoxModel<Tourist> touristModel;
     private JComboBox<Tourist> touristComboBox;
     private JComboBox<TourPackage> tourPackageComboBox;
     private JComboBox<Booking> bookingComboBox;
     private JComboBox<AudioLanguage> audLangComboBox;
-
+    
     private JTextField descriptionTextField;
     private JTextField locationTextField;
     private JTextField tourcostTextField;
     private JTextField ticketcostTextField;
     private JTextField datetimeTextField;
-
+    
     private JTextField nameTextField;
     private JTextField countryTextField;
     private JButton createBookingButton;
@@ -43,7 +43,7 @@ public class TouristInterface extends javax.swing.JFrame {
     private JTextField ticketTextField;
     private JTextField guidecostTextField;
     private JTabbedPane tabPanel;
-
+    
     private ArrayList<Tourist> touristList = new ArrayList<>(Arrays.asList(
             new Tourist("John", "London", AudioLanguage.FRENCH),
             new Tourist("Robert", "Rugby", AudioLanguage.ENGLISH)
@@ -54,24 +54,24 @@ public class TouristInterface extends javax.swing.JFrame {
             new SightSeeingTour("Kim", "Benahei", 29, 34),
             new SightSeeingTour("Linzi", "Nilefalls", 38, 50)
     ));
-
+    
     private ArrayList<Booking> bookingList = new ArrayList<>(Arrays.asList());
-
+    
     public TouristInterface() {
         initComponents();
     }
-
+    
     private void initComponents() {
-
+        
         setTitle("Tourist System");
         setSize(900, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        
         buildUI();
-
+        
         setVisible(true);
     }
-
+    
     private void buildUI() {
 
         // Create the first tab (page1) and add a JLabel to it
@@ -110,42 +110,42 @@ public class TouristInterface extends javax.swing.JFrame {
                                 .addComponent(panel3)
                         )
         );
-
+        
         add(panel);
     }
-
+    
     private JPanel createPanel1() {
-
+        
         touristModel = new DefaultComboBoxModel<>();
         touristComboBox = new JComboBox<>(touristModel);
-
+        
         for (Tourist t : touristList) {
             touristModel.addElement(t);
         }
-
+        
         tourPackageComboBox = new JComboBox<>(tourPackageList.toArray(new TourPackage[0]));
         bookingComboBox = new JComboBox<>(bookingList.toArray(new Booking[0]));
-
+        
         JLabel touristLabel = new JLabel("Tourists");
         JLabel tourPackageLabel = new JLabel("Tour Packages");
-
+        
         JLabel datetimeLabel = new JLabel("Date and Time");
         JLabel bookingLabel = new JLabel("Booking");
-
+        
         datetimeTextField = new JTextField();
-
+        
         createBookingButton = new JButton("Create Booking");
-
+        
         createBookingButton.addActionListener(event -> {
             createBookingButtonClicked();
         });
-
+        
         cancelBookingButton = new JButton("Cancel Booking");
-
+        
         cancelBookingButton.addActionListener(event -> {
             cancelBookingButtonClicked();
         });
-
+        
         JPanel panel = new JPanel();
         GroupLayout layout = new GroupLayout(panel);
         panel.setLayout(layout);
@@ -200,55 +200,55 @@ public class TouristInterface extends javax.swing.JFrame {
                                 .addComponent(cancelBookingButton)
                         )
         );
-
+        
         return panel;
     }
-
+    
     private JPanel createPanel2() {
-
+        
         audLangComboBox = new JComboBox<>(AudioLanguage.values());
-
+        
         JLabel touristLabel = new JLabel("Tourist");
         JLabel nameLabel = new JLabel("Name");
         JLabel countryLabel = new JLabel("Country");
         JLabel audioGuideLabel = new JLabel("Audio Guide");
-
+        
         newTouristButton = new JButton("New Tourist");
         saveTouristButton = new JButton("Save Tourist");
         viewBillButton = new JButton("View Bill");
         nameTextField = new JTextField();
         countryTextField = new JTextField();
-
+        
         newTouristButton.addActionListener(event -> {
             nameTextField.setText("");
             countryTextField.setText("");
             audLangComboBox.setSelectedIndex(-1);
         });
-
+        
         saveTouristButton.addActionListener(event -> {
             saveTouristButtonClicked();
         });
-
+        
         viewBillButton.addActionListener(event -> {
-
+            
             BookingUtil a = new BookingUtil();
-
+            
             Tourist t = (Tourist) touristComboBox.getSelectedItem();
-
+            
             if (t == null) {
                 JOptionPane.showMessageDialog(null, "Please select a tourist");
                 return;
             }
-
+            
             double[] bill = a.calculateBill(bookingList, t);
-
+            
             JOptionPane.showMessageDialog(
                     null,
                     "Your total bill is " + bill[0]
                     + "\nYour discounted bill is " + bill[1]
             );
         });
-
+        
         JPanel panel = new JPanel();
         GroupLayout layout = new GroupLayout(panel);
         panel.setLayout(layout);
@@ -308,33 +308,33 @@ public class TouristInterface extends javax.swing.JFrame {
                                 .addComponent(saveTouristButton)
                         )
         );
-
+        
         return panel;
-
+        
     }
-
+    
     JRadioButton withGuideCost = new JRadioButton("Yes");
     JRadioButton withoutGuideCost = new JRadioButton("No");
-
+    
     JRadioButton withCity = new JRadioButton("City Tour");
     JRadioButton withSightSeeing = new JRadioButton("SightSeeing Tour");
-
+    
     private JPanel createPanel3_1() {
         JLabel desLabel = new JLabel("Description");
         JLabel locationLabel = new JLabel("Location");
         JLabel tourCostLabel = new JLabel("Tour Cost");
-
+        
         descriptionTextField = new JTextField();
         locationTextField = new JTextField();
         tourcostTextField = new JTextField();
-
+        
         JPanel panel = new JPanel();
         GroupLayout layout = new GroupLayout(panel);
         panel.setLayout(layout);
-
+        
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
-
+        
         layout.setHorizontalGroup(
                 layout.createSequentialGroup()
                         // Column 1: labels
@@ -367,26 +367,26 @@ public class TouristInterface extends javax.swing.JFrame {
                                 .addComponent(tourcostTextField)
                         )
         );
-
+        
         return panel;
     }
-
+    
     private JPanel createPanel3_2() {
-
+        
         JLabel withGuideLabel = new JLabel("With Guide");
         JLabel guideCostLabel = new JLabel("Cost for the Guide (£)");
-
+        
         guidecostTextField = new JTextField();
-
+        
         JPanel panel = new JPanel();
         GroupLayout layout = new GroupLayout(panel);
         panel.setLayout(layout);
         Border raisedetched = BorderFactory.createEtchedBorder(EtchedBorder.RAISED);
         panel.setBorder(raisedetched);
-
+        
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
-
+        
         layout.setHorizontalGroup(
                 layout.createSequentialGroup()
                         // Column 1: labels
@@ -421,25 +421,25 @@ public class TouristInterface extends javax.swing.JFrame {
                                 .addComponent(guidecostTextField)
                         )
         );
-
+        
         return panel;
     }
-
+    
     private JPanel createPanel3_3() {
-
+        
         JLabel ticketCostLabel = new JLabel("Cost for the Tickets (£)");
         ticketcostTextField = new JTextField();
-
+        
         JPanel panel = new JPanel();
         GroupLayout layout = new GroupLayout(panel);
         panel.setLayout(layout);
-
+        
         Border raisedetched = BorderFactory.createEtchedBorder(EtchedBorder.RAISED);
         panel.setBorder(raisedetched);
-
+        
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
-
+        
         layout.setHorizontalGroup(
                 layout.createSequentialGroup()
                         // Column 1: labels
@@ -464,35 +464,36 @@ public class TouristInterface extends javax.swing.JFrame {
                                 .addComponent(ticketcostTextField)
                         )
         );
-
+        
         return panel;
     }
-
+    
     private JPanel createPanel3() {
-
+        
         JLabel tourPackageLabel = new JLabel("Tour Package");
-
+        
         newTourPackageButton = new JButton("New TourPackage");
         saveTourPackageButton = new JButton("Save TourPackage");
-
+        
         ButtonGroup guideGroup = new ButtonGroup();
         guideGroup.add(withGuideCost);
         guideGroup.add(withoutGuideCost);
         withoutGuideCost.addActionListener(event -> {
-            if (withoutGuideCost.isSelected())
+            if (withoutGuideCost.isSelected()) {
                 guidecostTextField.setText("0");
+            }
         });
         withGuideCost.setSelected(true);
-
+        
         ButtonGroup tourTypeGroup = new ButtonGroup();
         tourTypeGroup.add(withSightSeeing);
         tourTypeGroup.add(withCity);
         withCity.setSelected(true);
-
+        
         JPanel p1 = createPanel3_1();
         JPanel p2 = createPanel3_2();
         JPanel p3 = createPanel3_3();
-
+        
         newTourPackageButton.addActionListener(event -> {
             descriptionTextField.setText("");
             locationTextField.setText("");
@@ -500,18 +501,18 @@ public class TouristInterface extends javax.swing.JFrame {
             guidecostTextField.setText("");
             ticketcostTextField.setText("");
         });
-
+        
         saveTourPackageButton.addActionListener(event -> {
             saveTourPackageButtonClicked();
         });
-
+        
         JPanel panel = new JPanel();
         GroupLayout layout = new GroupLayout(panel);
         panel.setLayout(layout);
-
+        
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
-
+        
         layout.setHorizontalGroup(
                 layout.createParallelGroup()
                         // Row A (full width)
@@ -532,7 +533,7 @@ public class TouristInterface extends javax.swing.JFrame {
                                 .addComponent(saveTourPackageButton)
                         )
         );
-
+        
         layout.setVerticalGroup(
                 layout.createSequentialGroup()
                         // Row A
@@ -551,24 +552,24 @@ public class TouristInterface extends javax.swing.JFrame {
                                 .addComponent(saveTourPackageButton)
                         )
         );
-
+        
         return panel;
     }
-
+    
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             new TouristInterface().setVisible(true);
         });
     }
-
+    
     void createBookingButtonClicked() {
-
+        
         Tourist tourist = (Tourist) touristComboBox.getSelectedItem();
         if (tourist == null) {
             JOptionPane.showMessageDialog(null, "Please select a tourist");
             return;
         }
-
+        
         TourPackage tourPackage = (TourPackage) tourPackageComboBox.getSelectedItem();
         if (tourPackage == null) {
             JOptionPane.showMessageDialog(null, "Please select a Tour Package");
@@ -580,7 +581,7 @@ public class TouristInterface extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Please enter Date and Time");
             return;
         }
-
+        
         try {
             // 4. Convert String → Date
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -597,111 +598,111 @@ public class TouristInterface extends javax.swing.JFrame {
 
             // 8. Success message
             JOptionPane.showMessageDialog(null, "Booking created successfully!");
-
+            
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null,
                     "Invalid date format.\nUse: dd/MM/yyyy HH:mm:ss");
         }
     }
-
+    
     void cancelBookingButtonClicked() {
-
+        
         Object selected = bookingComboBox.getSelectedItem();
-
+        
         if (selected == null) {
             JOptionPane.showMessageDialog(null, "Please select a booking to cancel");
             return;
         }
-
+        
         bookingComboBox.removeItem(selected);
-
+        
         JOptionPane.showMessageDialog(null, "Booking cancelled successfully");
     }
-
+    
     void saveTourPackageButtonClicked() {
-
+        
         String description = descriptionTextField.getText().trim();
         String location = locationTextField.getText().trim();
         String tourCostStr = tourcostTextField.getText().trim();
         String guideCostStr = guidecostTextField.getText().trim();
         String ticketCostStr = ticketcostTextField.getText().trim();
-
+        
         if (description.isEmpty() || location.isEmpty() || tourCostStr.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Please fill all required fields");
             return;
         }
-
+        
         TourPackage tourPackage = null;
         try {
             int tourCost = Integer.parseInt(tourCostStr);
 
             // ================= CITY TOUR =================
             if (withCity.isSelected()) {
-
+                
                 if (guideCostStr.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Please enter guide cost");
                     return;
                 }
-
+                
                 int guideCost = Integer.parseInt(guideCostStr);
                 boolean isWithGuide = withGuideCost.isSelected();
                 
                 tourPackage = new CityTour(description, location, tourCost, isWithGuide, guideCost);
-
+                
                 JOptionPane.showMessageDialog(null, "City Tour saved!");
             } // ================= SIGHTSEEING TOUR =================
             else if (withSightSeeing.isSelected()) {
-
+                
                 if (ticketCostStr.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Please enter ticket cost");
                     return;
                 }
-
+                
                 int ticketCost = Integer.parseInt(ticketCostStr);
-
+                
                 tourPackage = new SightSeeingTour(description, location, tourCost, ticketCost);
-
+                
                 JOptionPane.showMessageDialog(null, "SightSeeing Tour saved!");
             }
-
+            
             if (tourPackage != null) {
                 tourPackageList.add(tourPackage);
                 tourPackageComboBox.setModel(
                         new DefaultComboBoxModel<>(tourPackageList.toArray(new TourPackage[0]))
                 );
             }
-
+            
             newTourPackageButton.doClick();
-
+            
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(null, "Costs must be numbers");
         }
     }
-
+    
     void saveTouristButtonClicked() {
-
+        
         AudioLanguage selectedLang = (AudioLanguage) audLangComboBox.getSelectedItem();
         if (selectedLang == null) {
             JOptionPane.showMessageDialog(null, "Please select a Language");
             return;
         }
-
+        
         String name = nameTextField.getText().trim();
         if (name.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Please add your name");
             return;
         }
-
+        
         String country = countryTextField.getText().trim();
         if (country.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Please select a Country");
             return;
         }
-
+        
         Tourist t = new Tourist(name, country, selectedLang);
         touristModel.addElement(t);
-
+        
         JOptionPane.showMessageDialog(null, "Tourist saved successfully!");
     }
-
+    
 }
